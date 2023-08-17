@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Perfil</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="assets_user/img/favicon.png" rel="icon">
+  <link href="assets_user/img/apple-touch-icon.png" rel="app  le-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets_user/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets_user/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets_user/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets_user/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="assets_user/vendor/quill/quill.bubble.css" rel="stylesheet">
+  <link href="assets_user/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="assets_user/vendor/simple-datatables/style.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="assets_user/css/style.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: NiceAdmin
+  * Updated: Jul 27 2023 with Bootstrap v5.3.1
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="#" class="logo d-flex align-items-center">
+        <img src="assets_user/img/logo.png" alt="">
+        <span class="d-none d-lg-block">TransGlobalExpress</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link nav-icon search-bar-toggle " href="#">
+            <i class="bi bi-search"></i>
+          </a>
+        </li><!-- End Search Icon-->
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">                 
+
+      <li class="nav-item">
+        <a class="nav-link " href="/profile">
+          <i class="bi bi-person"></i>
+          <span>Perfil</span>
+        </a>
+      </li><!-- End Profile Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/profile_historial">
+          <i class="bi bi-journal-text"></i>
+          <span>Historial</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#">
+          <i class="bi bi-calendar3-event"></i>
+          <span>Reservar</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#">
+          <i class="bi bi-cash-stack"></i>
+          <span>Comprar</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/logout">
+          <i class="bi bi-box-arrow-in-right"></i>
+          <span>Salir</span>
+        </a>
+      </li>
+
+    </ul>
+
+  </aside><!-- End Sidebar-->
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Perfil</h1>
+    </div><!-- End Page Title -->
+
+    <section class="section profile">
+      <div class="row">
+        <div class="col-xl-4">
+
+          <div class="card">
+            <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+
+              <img src="assets_user/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+              <h2><%=user.name %></h2>
+              <h3>Cliente</h3>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-xl-8">
+
+          <div class="card">
+            <div class="card-body pt-3">
+              <!-- Bordered Tabs -->
+              <ul class="nav nav-tabs nav-tabs-bordered">
+
+                <li class="nav-item">
+                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Descripción General</button>
+                </li>
+
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Editar Pefil</button>
+                </li>
+
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Cambiar Contraseña</button>
+                </li>
+
+              </ul>
+              <div class="tab-content pt-2">
+
+                <div class="tab-pane fade show active profile-overview" id="profile-overview">              
+
+                  <h5 class="card-title">Detalles del Perfil</h5>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label ">Nombre Completo</div>
+                    <div class="col-lg-9 col-md-8"><%=user.name %></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Correo Electrónico</div>
+                    <div class="col-lg-9 col-md-8"><%=user.email %></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">DNI</div>
+                    <div class="col-lg-9 col-md-8"><%=user.DNI %></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Dirección</div>
+                    <div class="col-lg-9 col-md-8"><%=user.address %></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Teléfono</div>
+                    <div class="col-lg-9 col-md-8"><%=user.phone %></div>
+                  </div>
+
+                  
+                </div>
+
+                <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+                  <!-- Profile Edit Form -->
+                  <form action="/profile_change" method="post" >
+                    <div class="row mb-3">
+                      <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Imagen de Perfil</label>
+                      <div class="col-md-8 col-lg-9">
+                        <img src="assets_user/img/profile-img.jpg" alt="Profile">
+                        <div class="pt-2">
+                          <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
+                          <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="name" class="col-md-4 col-lg-3 col-form-label">Nombre Completo</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="name" type="text" class="form-control" id="name" value="<%= user.name %>">
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="Email" class="col-md-4 col-lg-3 col-form-label">Correo Electrónico</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="email" type="email" class="form-control" style="background-color: #f0f0f0" id="Email" value="<%= user.email %>" readonly>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="DNI" class="col-md-4 col-lg-3 col-form-label">DNI</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="DNI" type="text" class="form-control" style="background-color: #f0f0f0" id="DNI" value="<%= user.DNI %>" readonly>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="Address" class="col-md-4 col-lg-3 col-form-label">Dirección</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="address" type="text" class="form-control" id="Address" value="<%= user.address %>">
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Teléfono</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="phone" type="text" class="form-control" id="Phone" value="<%= user.phone %>">
+                      </div>
+                    </div>
+
+                    <div class="text-center">
+                      <button class="btn btn-primary">Guardar Cambios</button>
+                    </div>
+                  </form><!-- End Profile Edit Form -->
+
+                </div>
+
+                <div class="tab-pane fade pt-3" id="profile-change-password">
+                  <!-- Change Password Form -->
+                  <form>
+
+                    <div class="row mb-3">
+                      <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Contraseña Actual</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="password" type="password" class="form-control" id="currentPassword">
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">Nueva Contraseña</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="newpassword" type="password" class="form-control" id="newPassword">
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-ingrese nueva contraseña</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="renewpassword" type="password" class="form-control" id="renewPassword">
+                      </div>
+                    </div>
+
+                    <div class="text-center">
+                      <button type="submit" class="btn btn-primary">Cambiar Contraseña</button>
+                    </div>
+                  </form><!-- End Change Password Form -->
+
+                </div>
+
+              </div><!-- End Bordered Tabs -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+  <!-- Vendor JS Files -->
+  <script src="assets_user/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="assets_user/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets_user/vendor/chart.js/chart.umd.js"></script>
+  <script src="assets_user/vendor/echarts/echarts.min.js"></script>
+  <script src="assets_user/vendor/quill/quill.min.js"></script>
+  <script src="assets_user/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="assets_user/vendor/tinymce/tinymce.min.js"></script>
+  <script src="assets_user/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="assets_user/js/main.js"></script>
+
+</body>
+
+</html>

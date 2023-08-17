@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Admin</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="assets_user/img/favicon.png" rel="icon">
+  <link href="assets_user/img/apple-touch-icon.png" rel="app  le-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets_user/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets_user/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets_user/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets_user/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="assets_user/vendor/quill/quill.bubble.css" rel="stylesheet">
+  <link href="assets_user/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="assets_user/vendor/simple-datatables/style.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="assets_user/css/style.css" rel="stylesheet">
+  <script data-require="jquery@*" data-semver="2.2.0" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
+  <!-- =======================================================
+  * Template Name: NiceAdmin
+  * Updated: Jul 27 2023 with Bootstrap v5.3.1
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="#" class="logo d-flex align-items-center">
+        <img src="assets_user/img/logo.png" alt="">
+        <span class="d-none d-lg-block">TransGlobalExpress</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link nav-icon search-bar-toggle " href="#">
+            <i class="bi bi-search"></i>
+          </a>
+        </li><!-- End Search Icon-->
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">                 
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/admin">
+          <i class="bi bi-house"></i>
+          <span>Inicio</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#">
+          <i class="bi bi-clipboard-data"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link " href="/clientes">
+          <i class="bi bi-people"></i>
+          <span>Clientes</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/rutas">
+          <i class="bi bi-sign-turn-slight-right"></i>
+          <span>Rutas</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/buses">
+          <i class="bi bi-bus-front-fill"></i>
+          <span>Buses</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/horarios_viaje">
+          <i class="bi bi-calendar3"></i>
+          <span>Horarios de Viaje</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/reservas">
+          <i class="bi bi-journal-text"></i>
+          <span>Reservas</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/ventas">
+          <i class="bi bi-cash"></i>
+          <span>Ventas</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/login">
+          <i class="bi bi-box-arrow-in-right"></i>
+          <span>Salir</span>
+        </a>
+      </li>
+
+    </ul>
+
+  </aside><!-- End Sidebar-->
+
+  <main id="main" class="main">
+
+    
+    <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+  
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Tabla de Clientes</h5>                
+  
+                <!-- Table with stripped rows -->
+                <table class="table datatable">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">DNI</th>
+                      <th scope="col">Nombre Completo</th>
+                      <th scope="col">Dirección</th>
+                      <th scope="col">Teléfono</th>
+                      <th scope="col">Correo Electrónico</th>
+                      <th scope="col">Acción</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% for(i=0; i < clientes.length; i++){ %>
+                        <tr>
+                          <th scope="row"><%=i+1 %></th>
+                          <td><%=clientes[i].IdCliente %></td>
+                          <td><%=clientes[i].Nombre %></td>
+                          <td><%=clientes[i].Direccion %></td>
+                          <td><%=clientes[i].Telefono %></td>
+                          <td><%=clientes[i].Email %></td>
+                          <td class="d-flex gap-2">
+                            <!-- <a href="/client_edit/<%= clientes[i].IdCliente %>" class="btn btn-info"> -->
+                            <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal" IdCliente="<%= clientes[i].IdCliente %>" 
+                              Nombre="<%=clientes[i].Nombre %>" Direccion="<%=clientes[i].Direccion %>" Telefono="<%=clientes[i].Telefono %>" 
+                              Email="<%=clientes[i].Email %>">
+                              Editar
+                            </a>
+                            <a href="/eliminar_cliente/<%= clientes[i].IdCliente %>" class="btn btn-danger">
+                              Eliminar
+                            </a>
+                          </td>
+                        </tr>
+                    <% } %>
+                    
+                  </tbody>
+                </table>
+                <!-- End Table with stripped rows -->
+                
+                <!-- Modal para editar -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"><b>Editar Cliente</b></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <form action="/client_edit" method="post">
+
+                          <div class="mb-3">
+                            <label for="DNI" class="col-form-label">DNI:</label>
+                            <input name = "DNI" type="text" class="form-control" id="DNI" style="background-color: #f0f0f0" readonly>
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="name" class="col-form-label">Nombre Completo:</label>
+                            <input name = "name" type="text" class="form-control" id="name" >
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="address" class="col-form-label">Dirección:</label>
+                            <input name = "address" type="text" class="form-control" id="address" >
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="phone" class="col-form-label">Teléfono:</label>
+                            <input name = "phone" type="text" class="form-control" id="phone" >
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="email" class="col-form-label">Correo Electrónico:</label>
+                            <input name = "email" type="text" class="form-control" id="email" style="background-color: #f0f0f0" readonly>
+                          </div>
+
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button class="btn btn-primary">Guardar cambios</button>
+                          </div>
+
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <script>
+                  // Para que nuestro modal sea movible
+                  $(document).ready(function() {
+                      // Inicializar la funcionalidad de arrastrar para los modales
+                      function initializeDraggable() {
+                          $('.modal-dialog').draggable({
+                              handle: ".modal-header"
+                          });
+                      }
+
+                      // Restablecer la posición de los modales antes de abrir uno nuevo
+                      $('.modal').on('show.bs.modal', function() {
+                          $('.modal-dialog').css({
+                              top: 0,
+                              left: 0
+                          });
+                      });
+
+                      // Inicializar la funcionalidad de arrastrar cuando la página esté lista
+                      initializeDraggable();
+                  });
+                </script>
+
+                
+                <script>
+                  // Para poner los datos al modal
+                  var modal = document.getElementById('exampleModal');
+                  
+                  modal.addEventListener('show.bs.modal', function (event) {
+                      var button = event.relatedTarget; // Botón que abrió el modal
+
+                      // Obtener los atributos y asignarlos al valor del campo de entrada en el modal
+                      modal.querySelector('.modal-body #DNI').value = button.getAttribute('IdCliente');
+                      modal.querySelector('.modal-body #name').value = button.getAttribute('Nombre'); 
+                      modal.querySelector('.modal-body #address').value = button.getAttribute('Direccion'); 
+                      modal.querySelector('.modal-body #phone').value = button.getAttribute('Telefono'); 
+                      modal.querySelector('.modal-body #email').value = button.getAttribute('Email'); 
+
+                  });
+                </script>
+
+
+              </div>
+            </div>               
+          </div>
+        </div>
+      </section>
+  </main><!-- End #main -->
+
+  <!-- Vendor JS Files -->
+  <script src="assets_user/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="assets_user/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets_user/vendor/chart.js/chart.umd.js"></script>
+  <script src="assets_user/vendor/echarts/echarts.min.js"></script>
+  <script src="assets_user/vendor/quill/quill.min.js"></script>
+  <script src="assets_user/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="assets_user/vendor/tinymce/tinymce.min.js"></script>
+  <script src="assets_user/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="assets_user/js/main.js"></script>
+
+</body>
+
+</html>
