@@ -28,8 +28,11 @@
 
   <!-- Template Main CSS File -->
   <link href="assets_user/css/style.css" rel="stylesheet">
-  <script data-require="jquery@*" data-semver="2.2.0" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-  <script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
+
+  <!-- Java query-->
+  <script src="javascripts/jquery/jquery.min.js"></script>
+  <script src="javascripts/jquery/jquery-ui.min.js"></script>
+
   <!-- =======================================================
   * Template Name: NiceAdmin
   * Updated: Jul 27 2023 with Bootstrap v5.3.1
@@ -144,10 +147,78 @@
         <div class="row">
           <div class="col-lg-12">
   
+
+            <% if(error == 2) {%>
+              <div class="alert alert-danger bg-danger text-light border-0 alert-dismissible fade show" role="alert">
+                El registro no se puede eliminar, Por favor verifique la existencia del DNI en la tabla de Reservas 
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            <%}%>
+
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">Tabla de Clientes</h5>                
-  
+                <h5 class="card-title">Tabla de Clientes</h5>   
+
+                <!-- Button trigger modal -->
+                <div class="card-body">            
+                  <button id="btn-add" type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#addModal"><i class="bi bi-plus-square"></i></button>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"><b>Añadir Cliente</b></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+
+                        <form action="/client_add" method="post">
+
+                          <div class="mb-3">
+                            <label for="IdCliente" class="col-form-label">DNI:</label>
+                            <input name = "IdCliente" type="text" class="form-control" id="IdCliente" required>
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="Nombre" class="col-form-label">Nombre Completo:</label>
+                            <input name = "Nombre" type="text" class="form-control" id="Nombre" required>
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="Direccion" class="col-form-label">Dirección:</label>
+                            <input name = "Direccion" type="text" class="form-control" id="Direccion" required>
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="Telefono" class="col-form-label">Teléfono:</label>
+                            <input name = "Telefono" type="text" class="form-control" id="Telefono" required>
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="Email" class="col-form-label">Correo Electrónico:</label>
+                            <input name = "Email" type="email" class="form-control" id="Email" required>
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="Pass" class="col-form-label">Contraseña:</label>
+                            <input name="Pass" type="password" class="form-control" id="Pass" required>
+                          </div>
+
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button class="btn btn-primary">Guardar cambios</button>
+                          </div>
+
+                        </form>
+
+                      </div>  
+                    </div>
+                  </div>
+                </div> <!-- end Modal -->
+
+
                 <!-- Table with stripped rows -->
                 <table class="table datatable">
                   <thead>
@@ -170,8 +241,7 @@
                           <td><%=clientes[i].Direccion %></td>
                           <td><%=clientes[i].Telefono %></td>
                           <td><%=clientes[i].Email %></td>
-                          <td class="d-flex gap-2">
-                            <!-- <a href="/client_edit/<%= clientes[i].IdCliente %>" class="btn btn-info"> -->
+                          <td class="d-flex gap-2">                            
                             <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal" IdCliente="<%= clientes[i].IdCliente %>" 
                               Nombre="<%=clientes[i].Nombre %>" Direccion="<%=clientes[i].Direccion %>" Telefono="<%=clientes[i].Telefono %>" 
                               Email="<%=clientes[i].Email %>">
@@ -265,7 +335,7 @@
                   var modal = document.getElementById('exampleModal');
                   
                   modal.addEventListener('show.bs.modal', function (event) {
-                      var button = event.relatedTarget; // Botón que abrió el modal
+                    var button = event.relatedTarget; // Botón que abrió el modal                    
 
                       // Obtener los atributos y asignarlos al valor del campo de entrada en el modal
                       modal.querySelector('.modal-body #DNI').value = button.getAttribute('IdCliente');
@@ -276,7 +346,6 @@
 
                   });
                 </script>
-
 
               </div>
             </div>               

@@ -29,6 +29,10 @@
   <!-- Template Main CSS File -->
   <link href="assets_user/css/style.css" rel="stylesheet">
 
+  <!-- Java query-->
+  <script src="javascripts/jquery/jquery.min.js"></script>
+  <script src="javascripts/jquery/jquery-ui.min.js"></script>
+
   <!-- =======================================================
   * Template Name: NiceAdmin
   * Updated: Jul 27 2023 with Bootstrap v5.3.1
@@ -143,10 +147,68 @@
         <div class="row">
           <div class="col-lg-12">
   
+
+            <% if(error == 1) {%>
+              <div class="alert alert-danger bg-danger text-light border-0 alert-dismissible fade show" role="alert">
+                El valor introducido de IdBus es incorrecto, Por favor verifique su existencia en la tabla de Buses. 
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            <%}%>
+
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">Tabla de Horarios de Viaje</h5>                
   
+
+                <!-- Button trigger modal -->
+                <div class="card-body">            
+                  <button id="btn-add" type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#addModal"><i class="bi bi-plus-square"></i></button>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"><b>Añadir Horario de Viaje</b></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+
+                        <form action="/horario_add" method="post">
+
+                          <div class="mb-3">
+                            <label for="IdHorario" class="col-form-label">IdHorario:</label>
+                            <input name = "IdHorario" type="text" class="form-control" id="IdHorario" required>
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="IdBus" class="col-form-label">IdBus:</label>
+                            <input name = "IdBus" type="text" min="0" class="form-control" id="IdBus" required>
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="Dia" class="col-form-label">Día:</label>
+                            <input name = "Dia" type="text" class="form-control" id="Dia" required>
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="Hora" class="col-form-label">Hora:</label>
+                            <input name = "Hora" type="time" class="form-control" id="Hora" required>
+                          </div>
+                          
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button class="btn btn-primary">Guardar cambios</button>
+                          </div>
+
+                        </form>
+
+                      </div>  
+                    </div>
+                  </div>
+                </div> <!-- end Modal -->
+
                 <!-- Table with stripped rows -->
                 <table class="table datatable">
                   <thead>
@@ -168,7 +230,8 @@
                           <td><%=horarios_viaje[i].Dia %></td>
                           <td><%=horarios_viaje[i].Hora %></td>
                           <td class="d-flex gap-2">
-                            <a href="#" class="btn btn-info">
+                            <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal" IdHorario="<%= horarios_viaje[i].IdHorario %>" 
+                              IdBus="<%=horarios_viaje[i].IdBus %>" Dia="<%=horarios_viaje[i].Dia %>" Hora="<%=horarios_viaje[i].Hora %>">
                               Editar
                             </a>
                             <a href="/eliminar_horario/<%= horarios_viaje[i].IdHorario %>" class="btn btn-danger">
@@ -181,6 +244,89 @@
                   </tbody>
                 </table>
                 <!-- End Table with stripped rows -->
+
+
+                <!-- Modal para editar -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"><b>Editar Horario de Viaje</b></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <form action="/horario_edit" method="post">
+
+                          <div class="mb-3">
+                            <label for="IdHorario" class="col-form-label">IdHorario:</label>
+                            <input name = "IdHorario" type="text" class="form-control" id="IdHorario" style="background-color: #f0f0f0" readonly>
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="IdBus" class="col-form-label">IdBus:</label>
+                            <input name = "IdBus" type="text" class="form-control" id="IdBus" >
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="Dia" class="col-form-label">Día:</label>
+                            <input name = "Dia" type="text" class="form-control" id="Dia" >
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="Hora" class="col-form-label">Hora (hh:mm:ss)</label>
+                            <input name = "Hora" type="time" class="form-control" id="Hora" >
+                          </div>    
+
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button class="btn btn-primary">Guardar cambios</button>
+                          </div>
+
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <script>
+                  // Para que nuestro modal sea movible
+                  $(document).ready(function() {
+                      // Inicializar la funcionalidad de arrastrar para los modales
+                      function initializeDraggable() {
+                          $('.modal-dialog').draggable({
+                              handle: ".modal-header"
+                          });
+                      }
+
+                      // Restablecer la posición de los modales antes de abrir uno nuevo
+                      $('.modal').on('show.bs.modal', function() {
+                          $('.modal-dialog').css({
+                              top: 0,
+                              left: 0
+                          });
+                      });
+
+                      // Inicializar la funcionalidad de arrastrar cuando la página esté lista
+                      initializeDraggable();
+                  });
+                </script>
+
+                
+                <script>
+                  // Para poner los datos al modal
+                  var modal = document.getElementById('exampleModal');
+                  
+                  modal.addEventListener('show.bs.modal', function (event) {
+                      var button = event.relatedTarget; // Botón que abrió el modal
+
+                      // Obtener los atributos y asignarlos al valor del campo de entrada en el modal
+                      modal.querySelector('.modal-body #IdHorario').value = button.getAttribute('IdHorario');
+                      modal.querySelector('.modal-body #IdBus').value = button.getAttribute('IdBus'); 
+                      modal.querySelector('.modal-body #Dia').value = button.getAttribute('Dia'); 
+                      modal.querySelector('.modal-body #Hora').value = button.getAttribute('Hora');                       
+                  });
+                </script>
   
               </div>
             </div>

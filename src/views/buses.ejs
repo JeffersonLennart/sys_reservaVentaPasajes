@@ -29,6 +29,9 @@
   <!-- Template Main CSS File -->
   <link href="assets_user/css/style.css" rel="stylesheet">
 
+  <!-- Java query-->
+  <script src="javascripts/jquery/jquery.min.js"></script>
+  <script src="javascripts/jquery/jquery-ui.min.js"></script>
   <!-- =======================================================
   * Template Name: NiceAdmin
   * Updated: Jul 27 2023 with Bootstrap v5.3.1
@@ -143,10 +146,78 @@
         <div class="row">
           <div class="col-lg-12">
   
+
+            <% if(error == 1) {%>
+              <div class="alert alert-danger bg-danger text-light border-0 alert-dismissible fade show" role="alert">
+                El valor introducido de IdRuta es incorrecto, Por favor verifique su existencia en la tabla de Rutas. 
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            <%} else if(error == 2){%>
+                <div class="alert alert-danger bg-danger text-light border-0 alert-dismissible fade show" role="alert">
+                  El registro no se puede eliminar, Por favor verifique la existencia de IdBus en la tabla de Reservas y Horarios.
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <% }%>  
+
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">Tabla de Buses</h5>                
   
+
+                <!-- Button trigger modal -->
+                <div class="card-body">            
+                  <button id="btn-add" type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#addModal"><i class="bi bi-plus-square"></i></button>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"><b>Añadir Bus</b></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+
+                        <form action="/bus_add" method="post">
+
+                          <div class="mb-3">
+                            <label for="IdBus" class="col-form-label">IdBus:</label>
+                            <input name = "IdBus" type="text" class="form-control" id="IdBus" required>
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="Capacidad" class="col-form-label">Capacidad:</label>
+                            <input name = "Capacidad" type="number" min="0" class="form-control" id="Capacidad" required>
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="Modelo" class="col-form-label">Modelo:</label>
+                            <input name = "Modelo" type="text" class="form-control" id="Modelo" required>
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="IdRuta" class="col-form-label">IdRuta:</label>
+                            <input name = "IdRuta" type="text" class="form-control" id="IdRuta" required>
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="Precio" class="col-form-label">Precio:</label>
+                            <input name = "Precio" type="text" class="form-control" id="Precio" required>
+                          </div>
+                          
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button class="btn btn-primary">Guardar cambios</button>
+                          </div>
+
+                        </form>
+
+                      </div>  
+                    </div>
+                  </div>
+                </div> <!-- end Modal -->
+
                 <!-- Table with stripped rows -->
                 <table class="table datatable">
                   <thead>
@@ -156,6 +227,7 @@
                       <th scope="col">Capacidad</th>
                       <th scope="col">Modelo</th>
                       <th scope="col">IdRuta</th>    
+                      <th scope="col">Precio</th>    
                       <th scope="col">Acción</th>                   
                     </tr>
                   </thead>
@@ -167,8 +239,11 @@
                           <td><%=buses[i].Capacidad %></td>
                           <td><%=buses[i].Modelo %></td>
                           <td><%=buses[i].IdRuta %></td>     
+                          <td><%=buses[i].Precio %></td>     
                           <td class="d-flex gap-2">
-                            <a href="#" class="btn btn-info">
+                            <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal" IdBus="<%= buses[i].IdBus %>" 
+                              Capacidad="<%=buses[i].Capacidad %>" Modelo="<%=buses[i].Modelo %>" IdRuta="<%=buses[i].IdRuta %>" 
+                              Precio="<%=buses[i].Precio %>">
                               Editar
                             </a>
                             <a href="/eliminar_bus/<%= buses[i].IdBus %>" class="btn btn-danger">
@@ -181,7 +256,96 @@
                   </tbody>
                 </table>
                 <!-- End Table with stripped rows -->
-  
+                
+
+                <!-- Modal para editar -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"><b>Editar Bus</b></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <form action="/bus_edit" method="post">
+
+                          <div class="mb-3">
+                            <label for="IdBus" class="col-form-label">IdBus:</label>
+                            <input name = "IdBus" type="text" class="form-control" id="IdBus" style="background-color: #f0f0f0" readonly>
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="Capacidad" class="col-form-label">Capacidad:</label>
+                            <input name = "Capacidad" type="number" min="0" class="form-control" id="Capacidad" >
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="Modelo" class="col-form-label">Modelo:</label>
+                            <input name = "Modelo" type="text" class="form-control" id="Modelo" >
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="IdRuta" class="col-form-label">IdRuta:</label>
+                            <input name = "IdRuta" type="text" class="form-control" id="IdRuta">
+                          </div>    
+
+                          <div class="mb-3">
+                            <label for="Precio" class="col-form-label">Precio:</label>
+                            <input name = "Precio" type="text" class="form-control" id="Precio">
+                          </div>    
+
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button class="btn btn-primary">Guardar cambios</button>
+                          </div>
+
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <script>
+                  // Para que nuestro modal sea movible
+                  $(document).ready(function() {
+                      // Inicializar la funcionalidad de arrastrar para los modales
+                      function initializeDraggable() {
+                          $('.modal-dialog').draggable({
+                              handle: ".modal-header"
+                          });
+                      }
+
+                      // Restablecer la posición de los modales antes de abrir uno nuevo
+                      $('.modal').on('show.bs.modal', function() {
+                          $('.modal-dialog').css({
+                              top: 0,
+                              left: 0
+                          });
+                      });
+
+                      // Inicializar la funcionalidad de arrastrar cuando la página esté lista
+                      initializeDraggable();
+                  });
+                </script>
+
+                
+                <script>
+                  // Para poner los datos al modal
+                  var modal = document.getElementById('exampleModal');
+                  
+                  modal.addEventListener('show.bs.modal', function (event) {
+                      var button = event.relatedTarget; // Botón que abrió el modal
+
+                      // Obtener los atributos y asignarlos al valor del campo de entrada en el modal
+                      modal.querySelector('.modal-body #IdBus').value = button.getAttribute('IdBus');
+                      modal.querySelector('.modal-body #Capacidad').value = button.getAttribute('Capacidad'); 
+                      modal.querySelector('.modal-body #Modelo').value = button.getAttribute('Modelo'); 
+                      modal.querySelector('.modal-body #IdRuta').value = button.getAttribute('IdRuta');                       
+                      modal.querySelector('.modal-body #Precio').value = button.getAttribute('Precio');                       
+                  });
+                </script>
+
               </div>
             </div>
   

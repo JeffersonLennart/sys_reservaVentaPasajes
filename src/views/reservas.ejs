@@ -29,6 +29,10 @@
   <!-- Template Main CSS File -->
   <link href="assets_user/css/style.css" rel="stylesheet">
 
+  <!-- Java query-->
+  <script src="javascripts/jquery/jquery.min.js"></script>
+  <script src="javascripts/jquery/jquery-ui.min.js"></script>
+
   <!-- =======================================================
   * Template Name: NiceAdmin
   * Updated: Jul 27 2023 with Bootstrap v5.3.1
@@ -142,11 +146,83 @@
     <section class="section">
         <div class="row">
           <div class="col-lg-12">
-  
+            
+            <% if(error == 1) {%>
+              <div class="alert alert-danger bg-danger text-light border-0 alert-dismissible fade show" role="alert">
+                El valor introducido de DNI, IdBus o IdRuta es incorrecto, Por favor verifique su existencia en la tabla de Clientes, Buses o Rutas. 
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            <%} else if(error == 2){%>
+                <div class="alert alert-danger bg-danger text-light border-0 alert-dismissible fade show" role="alert">
+                  El registro no se puede eliminar, Por favor verifique la existencia de IdReserva en la tabla de Ventas.
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <% }%>  
+
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">Tabla de Reservas</h5>                
   
+
+                <!-- Button trigger modal -->
+                <div class="card-body">            
+                  <button id="btn-add" type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#addModal"><i class="bi bi-plus-square"></i></button>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"><b>Añadir Reserva</b></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+
+                        <form action="/reserva_add" method="post">
+
+                          <div class="mb-3">
+                            <label for="IdReserva" class="col-form-label">IdReserva:</label>
+                            <input name = "IdReserva" type="text" class="form-control" id="IdReserva" required>
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="Fecha" class="col-form-label">Fecha:</label>
+                            <input name = "Fecha" type="date" class="form-control" id="Fecha" required>
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="NroAsiento" class="col-form-label">NroAsiento:</label>
+                            <input name = "NroAsiento" type="number" min="0" class="form-control" id="NroAsiento" required>
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="IdCliente" class="col-form-label">DNI:</label>
+                            <input name = "IdCliente" type="text" class="form-control" id="IdCliente" required>
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="IdBus" class="col-form-label">IdBus:</label>
+                            <input name = "IdBus" type="text" class="form-control" id="IdBus" required>
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="IdRuta" class="col-form-label">IdRuta:</label>
+                            <input name="IdRuta" type="text" class="form-control" id="IdRuta" required>
+                          </div>
+
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button class="btn btn-primary">Guardar cambios</button>
+                          </div>
+
+                        </form>
+
+                      </div>  
+                    </div>
+                  </div>
+                </div> <!-- end Modal -->
+
                 <!-- Table with stripped rows -->
                 <table class="table datatable">
                   <thead>
@@ -155,7 +231,7 @@
                       <th scope="col">IdReserva</th>
                       <th scope="col">Fecha</th>
                       <th scope="col">NroAsiento</th>
-                      <th scope="col">IdCliente</th>
+                      <th scope="col">DNI</th>
                       <th scope="col">IdBus</th>
                       <th scope="col">IdRuta</th>
                       <th scope="col">Acción</th>   
@@ -172,7 +248,9 @@
                           <td><%=reservas[i].IdBus %></td>
                           <td><%=reservas[i].IdRuta %></td>
                           <td class="d-flex gap-2">
-                            <a href="#" class="btn btn-info">
+                            <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal" IdReserva="<%= reservas[i].IdReserva %>" 
+                              Fecha="<%=reservas[i].Fecha %>" NroAsiento="<%=reservas[i].NroAsiento %>" IdCliente="<%=reservas[i].IdCliente %>"
+                              IdBus="<%=reservas[i].IdBus %>" IdRuta="<%=reservas[i].IdRuta %>">
                               Editar
                             </a>
                             <a href="/eliminar_reserva/<%= reservas[i].IdReserva %>" class="btn btn-danger">
@@ -185,7 +263,109 @@
                   </tbody>
                 </table>
                 <!-- End Table with stripped rows -->
-  
+
+
+                <!-- Modal para editar -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"><b>Editar Reserva</b></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <form action="/reserva_edit" method="post">
+
+                          <div class="mb-3">
+                            <label for="IdReserva" class="col-form-label">IdReserva:</label>
+                            <input name = "IdReserva" type="text" class="form-control" id="IdReserva" style="background-color: #f0f0f0" readonly>
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="Fecha" class="col-form-label">Fecha:</label>
+                            <input name = "Fecha" type="date" class="form-control" id="Fecha" >
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="NroAsiento" class="col-form-label">NroAsiento:</label>
+                            <input name = "NroAsiento" type="text" class="form-control" id="NroAsiento" >
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="IdCliente" class="col-form-label">IdCliente:</label>
+                            <input name = "IdCliente" type="text" class="form-control" id="IdCliente">
+                          </div>    
+
+                          <div class="mb-3">
+                            <label for="IdBus" class="col-form-label">IdBus:</label>
+                            <input name = "IdBus" type="text" class="form-control" id="IdBus">
+                          </div>    
+
+                          <div class="mb-3">
+                            <label for="IdRuta" class="col-form-label">IdRuta:</label>
+                            <input name = "IdRuta" type="text" class="form-control" id="IdRuta">
+                          </div>    
+
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button class="btn btn-primary">Guardar cambios</button>
+                          </div>
+
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <script>
+                  // Para que nuestro modal sea movible
+                  $(document).ready(function() {
+                      // Inicializar la funcionalidad de arrastrar para los modales
+                      function initializeDraggable() {
+                          $('.modal-dialog').draggable({
+                              handle: ".modal-header"
+                          });
+                      }
+
+                      // Restablecer la posición de los modales antes de abrir uno nuevo
+                      $('.modal').on('show.bs.modal', function() {
+                          $('.modal-dialog').css({
+                              top: 0,
+                              left: 0
+                          });
+                      });
+
+                      // Inicializar la funcionalidad de arrastrar cuando la página esté lista
+                      initializeDraggable();
+                  });
+                </script>
+
+                <script>
+                  function invertirFecha(fecha) {
+                    var partes = fecha.split('-');
+                    if (partes.length === 3) {
+                      return partes[2] + '-' + partes[1] + '-' + partes[0];
+                    } else {
+                      return 'Fecha inválida';
+                    }
+                  }
+                  // Para poner los datos al modal
+                  var modal = document.getElementById('exampleModal');
+                  
+                  modal.addEventListener('show.bs.modal', function (event) {
+                      var button = event.relatedTarget; // Botón que abrió el modal
+                      
+                      // Obtener los atributos y asignarlos al valor del campo de entrada en el modal
+                      modal.querySelector('.modal-body #IdReserva').value = button.getAttribute('IdReserva');
+                      modal.querySelector('.modal-body #Fecha').value = invertirFecha(button.getAttribute('Fecha'));                       
+                      modal.querySelector('.modal-body #NroAsiento').value = button.getAttribute('NroAsiento'); 
+                      modal.querySelector('.modal-body #IdCliente').value = button.getAttribute('IdCliente');                       
+                      modal.querySelector('.modal-body #IdBus').value = button.getAttribute('IdBus');                       
+                      modal.querySelector('.modal-body #IdRuta').value = button.getAttribute('IdRuta');                                                                 
+                  });
+                </script>
+
+                
               </div>
             </div>
   

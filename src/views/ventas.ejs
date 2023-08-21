@@ -29,6 +29,10 @@
   <!-- Template Main CSS File -->
   <link href="assets_user/css/style.css" rel="stylesheet">
 
+  <!-- Java query-->
+  <script src="javascripts/jquery/jquery.min.js"></script>
+  <script src="javascripts/jquery/jquery-ui.min.js"></script>
+
   <!-- =======================================================
   * Template Name: NiceAdmin
   * Updated: Jul 27 2023 with Bootstrap v5.3.1
@@ -146,7 +150,52 @@
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">Tabla de Ventas</h5>                
-  
+                
+
+                <!-- Button trigger modal -->
+                <div class="card-body">            
+                  <button id="btn-add" type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#addModal"><i class="bi bi-plus-square"></i></button>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"><b>Añadir Venta</b></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+
+                        <form action="/venta_add" method="post">
+
+                          <div class="mb-3">
+                            <label for="IdVenta" class="col-form-label">IdVenta:</label>
+                            <input name = "IdVenta" type="text" class="form-control" id="IdVenta" required>
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="FechaVenta" class="col-form-label">FechaVenta:</label>
+                            <input name = "FechaVenta" type="date" class="form-control" id="FechaVenta" required>
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="IdReserva" class="col-form-label">IdReserva:</label>
+                            <input name = "IdReserva" type="text" class="form-control" id="IdReserva" required>
+                          </div>
+
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button class="btn btn-primary">Guardar cambios</button>
+                          </div>
+
+                        </form>
+
+                      </div>  
+                    </div>
+                  </div>
+                </div> <!-- end Modal -->
+                
                 <!-- Table with stripped rows -->
                 <table class="table datatable">
                   <thead>
@@ -154,7 +203,6 @@
                       <th scope="col">#</th>
                       <th scope="col">IdVenta</th>
                       <th scope="col">FechaVenta</th>
-                      <th scope="col">Precio</th>
                       <th scope="col">IdReserva</th>    
                       <th scope="col">Acción</th>                   
                     </tr>
@@ -165,10 +213,10 @@
                           <th scope="row"><%=i+1 %></th>
                           <td><%=ventas[i].IdVenta %></td>
                           <td><%=ventas[i].FechaVenta %></td>
-                          <td><%=ventas[i].Precio %></td>
                           <td><%=ventas[i].IdReserva %></td>   
                           <td class="d-flex gap-2">
-                            <a href="#" class="btn btn-info">
+                            <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal" IdVenta="<%=ventas[i].IdVenta %>" 
+                              FechaVenta="<%=ventas[i].FechaVenta %>" IdReserva="<%=ventas[i].IdReserva %>">
                               Editar
                             </a>
                             <a href="/eliminar_venta/<%= ventas[i].IdVenta %>" class="btn btn-danger">
@@ -182,6 +230,89 @@
                 </table>
                 <!-- End Table with stripped rows -->
   
+                <!-- Modal para editar -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"><b>Editar Venta</b></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <form action="/venta_edit" method="post">
+
+                          <div class="mb-3">
+                            <label for="IdVenta" class="col-form-label">IdVenta:</label>
+                            <input name = "IdVenta" type="text" class="form-control" id="IdVenta" style="background-color: #f0f0f0" readonly>
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="FechaVenta" class="col-form-label">FechaVenta:</label>
+                            <input name = "FechaVenta" type="date" class="form-control" id="FechaVenta" >
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="IdReserva" class="col-form-label">IdReserva:</label>
+                            <input name = "IdReserva" type="text" class="form-control" id="IdReserva" style="background-color: #f0f0f0" readonly>
+                          </div>
+
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button class="btn btn-primary">Guardar cambios</button>
+                          </div>
+
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <script>
+                  // Para que nuestro modal sea movible
+                  $(document).ready(function() {
+                      // Inicializar la funcionalidad de arrastrar para los modales
+                      function initializeDraggable() {
+                          $('.modal-dialog').draggable({
+                              handle: ".modal-header"
+                          });
+                      }
+
+                      // Restablecer la posición de los modales antes de abrir uno nuevo
+                      $('.modal').on('show.bs.modal', function() {
+                          $('.modal-dialog').css({
+                              top: 0,
+                              left: 0
+                          });
+                      });
+
+                      // Inicializar la funcionalidad de arrastrar cuando la página esté lista
+                      initializeDraggable();
+                  });
+                </script>
+
+                <script>
+                  function invertirFecha(fecha) {
+                    var partes = fecha.split('-');
+                    if (partes.length === 3) {
+                      return partes[2] + '-' + partes[1] + '-' + partes[0];
+                    } else {
+                      return 'Fecha inválida';
+                    }
+                  }
+                  // Para poner los datos al modal
+                  var modal = document.getElementById('exampleModal');
+                  
+                  modal.addEventListener('show.bs.modal', function (event) {
+                      var button = event.relatedTarget; // Botón que abrió el modal
+
+                      // Obtener los atributos y asignarlos al valor del campo de entrada en el modal
+                      modal.querySelector('.modal-body #IdVenta').value = button.getAttribute('IdVenta');
+                      modal.querySelector('.modal-body #FechaVenta').value = invertirFecha(button.getAttribute('FechaVenta'));                       
+                      modal.querySelector('.modal-body #IdReserva').value = button.getAttribute('IdReserva');                       
+                  });
+                </script>
+
               </div>
             </div>
   
