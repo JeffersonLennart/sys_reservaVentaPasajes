@@ -2,8 +2,8 @@ var mysql = require("mysql2")
 //require('dotenv').config();
 
 var conn = mysql.createConnection({
-    host: "10.10.28.14",
-    user: "user",
+    host: "127.0.0.1",
+    user: "root",
     password: "1234",
     database: "transglobalexpress"
 })
